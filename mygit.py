@@ -25,7 +25,7 @@ else:
 
 def edit_project(version):
     # step 1 delete folder project
-    shutil.rmtree(project)
+    shutil.rmtree("project")
     # step 2 recreate folder project
     os.mkdir("project")
     # step 3 copy files from .mygit
@@ -82,32 +82,30 @@ if len(args) > 1:
         else :
             print(diff_files(args[2] , args[3]))
     elif args[1] == "push":
-        if len(args) < 2 :
-            print("please use as python mygit.py push")
         edit_version("add")
         os.mkdir(".mygit/" + str(current_version))
         for file in os.listdir("project"):
             shutil.copy("project/" + file, ".mygit/" + str(current_version))
 
     elif args[1] == "rollback":
-        if len(args) < 2:
+        if len(args) < 3:
             print("All versions after rollback will be deleted")
             print("please use as python mygit.py rollback <version>")
             print("type b for past version")
-            return
-        try:
-            target = int(args[2])
-            edit_project(target)
-            for i in range(target + 1, current_version + 1):
-                path = ".mygit/" + str(i)
-                shutil.rmtree(path)
-        except ValueError:
-            if args[2] == "b":
-                os.system("rm -rf .mygit/" + str(current_version))
-                edit_version("subtract")
-                edit_project(current_version)
-            else:
-                print("Unkown command")
+        else:
+            try:
+                target = int(args[2])
+                edit_project(target)
+                for i in range(target + 1, current_version + 1):
+                    path = ".mygit/" + str(i)
+                    shutil.rmtree(path)
+            except ValueError:
+                if args[2] == "b":
+                    shutil.rmtree(".mygit/" + str(current_version))
+                    edit_version("subtract")
+                    edit_project(current_version)
+                else:
+                    print("Unkown command")
     else:
         print("Unkown command")
 else:
