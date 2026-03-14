@@ -118,3 +118,4 @@ else:
 # 2. Implement merge
 # 3. A rollback no delete flag
 # 4. A REPL system
+# 5. A file spicific rollback
